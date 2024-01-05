@@ -16,26 +16,18 @@ with st.sidebar:
     st.write("お問い合わせ")
     st.write("その他")
 
-# テキスト入力で名前を尋ねる
-name = st.text_input('あなたの名前は何ですか？')
 
-# 日付入力
-birthday = st.date_input("あなたの誕生日は？")
 
-# 年齢を計算して表示
-if birthday is not None:
-    today = datetime.date.today()
-    age = today.year - birthday.year - ((today.month, today.day) < (birthday.month, birthday.day))
-    st.write(f"あなたは {age} 歳です！")
 
-# セレクトボックスを使用して好きな食べ物を尋ねる
-food = st.selectbox('好きな食べ物は何ですか？', ('寿司', 'ラーメン', 'カレー'))
-st.write(f'あなたは {food} が好きですね！')
-
-# スライダーを使って気分を尋ねる
-mood = st.slider('今の気分は？', 0, 100, 50)
-st.write(f'あなたの気分: {mood}')
+# セッション状態の使用
+if 'greeted' not in st.session_state:
+    st.session_state['greeted'] = False
 
 # ボタンを使ってアクションを実行
 if st.button('挨拶'):
-    st.write(f'こんにちは、{name}さん！')
+    st.session_state['greeted'] = True
+    st.experimental_rerun()
+
+# メッセージの表示
+if st.session_state['greeted']:
+      st.markdown('<style>p.big-font {font-size: 30px;}</style><p class="big-font">Welcome to my Page!</p>', unsafe_allow_html=True)
